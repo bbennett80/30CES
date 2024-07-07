@@ -7,13 +7,16 @@ from birdnetlib.analyzer import Analyzer
 import matplotlib.pyplot as plt
 import pandas as pd
 
-base_dir = 'content'
-extractions_dir = os.path.join(base_dir, 'audio')
-spectrograms_dir = os.path.join(base_dir, 'spectrograms')
-
 uploaded_file = input("Please enter the file to analyze: ")
 uploaded_file_base = uploaded_file.split(".")[0]
 
+base_dir = uploaded_file_base
+extractions_dir = os.path.join(base_dir, 'audio')
+spectrograms_dir = os.path.join(base_dir, 'spectrograms')
+
+# Check if 'audio' directory exists, create it if not
+if not os.path.exists(base_dir):
+    os.makedirs(base_dir)
 
 # Check if 'audio' directory exists, create it if not
 if not os.path.exists(extractions_dir):
@@ -109,7 +112,7 @@ bars = name_counts.plot(kind='bar', color='skyblue')
 for bar, avg_conf in zip(bars.patches, avg_confidence):
     height = bar.get_height()
     plt.text(bar.get_x() + bar.get_width() / 2, height + 0.5,
-             f'{avg_conf:.2f}%', ha='center', va='bottom',
+             f'{avg_conf:.1%}', ha='center', va='bottom',
              rotation=0, fontsize=8)
 
 plt.title('Count: Detections with Mean Model Confidence')
