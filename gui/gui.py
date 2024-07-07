@@ -1,13 +1,21 @@
 import streamlit as st
-
 from zipfile import ZipFile
 import pandas as pd
 import os
 
+st.set_page_config(page_title="Vizual Analyzer", 
+                    initial_sidebar_state="expanded",
+                    menu_items={
+                        'Report a bug': "https://github.com/bbennett80/30CES/",
+                        'About': "A simple vizualizer of 30 CES samples."
+                    }
+                )
+
+base_dir = "temp_directory"
 
 def unzip_file(zip_file):
     with ZipFile(zip_file, 'r') as zip_ref:
-        zip_ref.extractall("temp_directory")
+        zip_ref.extractall(base_dir)
 
 def find_excel_file(directory):
     for file in os.listdir(directory):
@@ -22,33 +30,35 @@ def find_plot_file(directory):
     return None
 
 def display_audio_and_spectrogram(audio_file, spectrogram_file):
-    image = st.image(spectrogram_file)
-    audio = st.audio(audio_file, autoplay=True)
-    return image, audio
-
-audio_dir = "temp_directory/audio"
-audio_files = os.listdir(audio_dir) if os.path.exists(audio_dir) else []
+    st.image(spectrogram_file)
+    st.audio(audio_file, autoplay=True)
 
 uploaded_file = st.sidebar.file_uploader("Upload ZIP file", type="zip")
-selected_snippet = st.selectbox("Select Audio Snippet", audio_files)
-display_excel_data = st.sidebar.toggle("Show excel data")
-display_count_plot = st.sidebar.toggle("Show count plot")
 
 if uploaded_file is not None:
     unzip_file(uploaded_file)
 
-if selected_snippet:
-    audio_path = os.path.join(audio_dir, selected_snippet)
-    spectrogram_path = f"temp_directory/spectrograms/{selected_snippet.replace('.wav', '.jpg')}"
-    display_audio_and_spectrogram(audio_path, spectrogram_path)
+    audio_dir = f"{base_dir}/audio"
 
-if display_excel_data:
-    excel_data_path = "temp_directory/"
-    excel_file = find_excel_file(excel_data_path)
-    df = pd.read_excel(excel_file)
-    st.dataframe(df)
+    if os.path.exists(audio_dir):
+        audio_files = sorted(os.listdir(audio_dir))
+    else:
+        audio_files = []
+    
+    selected_snippet = st.selectbox("Select Audio Snippet", audio_files)
+    display_excel_data = st.sidebar.toggle("Show excel data")
+    display_count_plot = st.sidebar.toggle("Show count plot")
 
-if display_count_plot:
-    plot_path = "temp_directory/"
-    count_plot = find_plot_file(plot_path)
-    st.image(count_plot)
+    if selected_snippet:
+        audio_path = os.path.join(audio_dir, selected_snippet)
+        spectrogram_path = f"{base_dir}/spectrograms/{selected_snippet.replace('.wav', '.jpg')}"
+        display_audio_and_spectrogram(audio_path, spectrogram_path)
+
+    if display_excel_data:
+        excel_file = find_excel_file(base_dir)
+        df = pd.read_excel(excel_file)
+        st.dataframe(df)
+
+    if display_count_plot:
+        count_plot = find_plot_file(base_dir)
+        st.image(count_plot)
