@@ -1,5 +1,4 @@
 import os
-import shutil
 import zipfile
 from datetime import datetime
 from birdnetlib import Recording
@@ -7,14 +6,14 @@ from birdnetlib.analyzer import Analyzer
 import matplotlib.pyplot as plt
 import pandas as pd
 
-uploaded_file = input("Please enter the file to analyze: ")
-uploaded_file_base = uploaded_file.split(".")[0]
-
-base_dir = uploaded_file_base
+base_dir = 'content'
 extractions_dir = os.path.join(base_dir, 'audio')
 spectrograms_dir = os.path.join(base_dir, 'spectrograms')
 
-# Check if 'audio' directory exists, create it if not
+uploaded_file = input("Please enter the file to analyze: ")
+uploaded_file_base = uploaded_file.split(".")[0]
+
+# Check if 'content' directory exists, create it if not
 if not os.path.exists(base_dir):
     os.makedirs(base_dir)
 
@@ -28,8 +27,8 @@ if not os.path.exists(spectrograms_dir):
 
 # Sets some default variables
 min_conf = 0.7
-padding_secs = 0.5
-dpi = 300
+padding_secs = 1.0
+dpi = 144
 audio_format = 'wav'
 spectrogram_format = 'jpg'
 
@@ -57,10 +56,10 @@ for detection in detections:
     row.append(common_name)
     row.append(scientific_name)
     row.append(time_frame)
-    row.append("{0:.2%}".format(confidence))
+    row.append("{0:.1%}".format(confidence))
     row.append(audio_file)
     row.append(spectrogram)
-    print(f"{common_name} ({scientific_name}): {confidence:.2%}")
+    print(f"{common_name} ({scientific_name}): {confidence:.1%}")
     detected_table.append(row)
 
 print(f"Detected {len(detected_table)} samples in {uploaded_file}")
@@ -100,22 +99,14 @@ avg_confidence = df.groupby('Sci Name')['Confidence'].apply(lambda x: pd.to_nume
 plt.figure(figsize=(14, 8))  # Increased figure size
 bars = name_counts.plot(kind='bar', color='skyblue')
 
-# Define thresholds
-height_threshold = plt.ylim()[1] * 0.1  # 10% of max height
-inside_bar_threshold = plt.ylim()[1] * 0.2  # 20% of max height
-
-# Plotting
-plt.figure(figsize=(14, 8))  # Increased figure size
-bars = name_counts.plot(kind='bar', color='skyblue')
-
 # Add average Confidence text above each bar
 for bar, avg_conf in zip(bars.patches, avg_confidence):
     height = bar.get_height()
     plt.text(bar.get_x() + bar.get_width() / 2, height + 0.5,
-             f'{avg_conf:.1%}', ha='center', va='bottom',
+             f'{avg_conf:.2f}%', ha='center', va='bottom',
              rotation=0, fontsize=8)
 
-plt.title('Count: Detections with Mean Model Confidence')
+plt.title('Count: Sci Name Detections with Mean Model Confidence')
 plt.xlabel('Sci Name')
 plt.ylabel('Count')
 plt.xticks(rotation=45, ha='right')
@@ -127,7 +118,7 @@ plt.subplots_adjust(top=0.9)
 # Increase y-axis limit to make room for labels
 plt.ylim(0, plt.ylim()[1] * 1.1)  # Increase the upper limit by 10%
 
-plt.savefig(f'content/{uploaded_file_base}_plot.png', dpi=dpi, bbox_inches='tight')
+plt.savefig(f'content/{uploaded_file_base}_plot.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Walk through the 'content' directory and add all files and directories to the zip archive for download
