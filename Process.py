@@ -103,7 +103,7 @@ bars = name_counts.plot(kind='bar', color='skyblue')
 for bar, avg_conf in zip(bars.patches, avg_confidence):
     height = bar.get_height()
     plt.text(bar.get_x() + bar.get_width() / 2, height + 0.5,
-             f'{avg_conf:.2f}%', ha='center', va='bottom',
+             f'{avg_conf:.1f}%', ha='center', va='bottom',
              rotation=0, fontsize=8)
 
 plt.title('Count: Sci Name Detections with Mean Model Confidence')
