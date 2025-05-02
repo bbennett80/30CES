@@ -9,8 +9,8 @@ Make sure to double check variables:
 
 
 # TODO's
-- [] update Streamlit UI
-- [] Add loop to analyze all files in directory
-- [] Error handling
-- [] UI inputs to limit lat/lon
-- [] UI to specify species of interst
+- [ ] update Streamlit UI
+- [ ] Add loop to analyze all files in directory
+- [ ] Error handling
+- [ ] UI inputs to limit lat/lon
+- [ ] UI to specify species of interst
