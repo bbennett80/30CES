@@ -13,4 +13,4 @@ Make sure to double check variables:
 - [ ] Add loop to analyze all files in directory
 - [ ] Error handling
 - [ ] UI inputs to limit lat/lon
-- [ ] UI to specify species of interst
+- [ ] UI to specify species of interest
