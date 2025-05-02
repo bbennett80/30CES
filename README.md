@@ -1,5 +1,5 @@
 # Introduction
-The `30CES` project is  a colloborative effort at CSU - Bakersfield in the Department of Biology, under the guidance of Dr. Luke Hall, PhD.
+The `30CES` project is a colloborative effort at CSU - Bakersfield in the Department of Biology, under the guidance of Dr. Luke Hall, PhD, and lead by Gradute students Megan McCullah-Boozer and Rachel Budge.
 
 # Stack
 - Streamlit (web UI)
