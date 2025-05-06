@@ -51,17 +51,13 @@ uv venv
 
 This creates a `.venv` directory with a Python environment.
 
-To specify a custom location:
-
-```bash
-uv venv /path/to/environment
-```
-
 To use a specific Python version:
 
 ```bash
 uv venv --python=python3.11
 ```
+
+Or use the included python [virtual enfironment](https://docs.python.org/3/tutorial/venv.html).
 
 ### Activating Virtual Environments
 
