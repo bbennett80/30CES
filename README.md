@@ -57,7 +57,7 @@ To use a specific Python version:
 uv venv --python=python3.11
 ```
 
-Or use the included python [virtual enfironment](https://docs.python.org/3/tutorial/venv.html).
+Or use the included python [virtual environment](https://docs.python.org/3/tutorial/venv.html).
 
 ### Activating Virtual Environments
 
