@@ -138,7 +138,9 @@ def create_zip():
 
 
 if __name__ == "__main__":
-    analyzer = Analyzer()
+    load_model = st.button("Load BirdNET Model")
+    if load_model:
+        analyzer = Analyzer()
 
 
     if uploaded_file:
